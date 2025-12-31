@@ -1,6 +1,19 @@
-import os
 
+import os
+import torch
+import fairseq.data.dictionary
+import torch.serialization
 from fairseq import checkpoint_utils
+
+# Patch torch.load for PyTorch 2.6+ compatibility
+_original_torch_load = torch.load
+def patched_torch_load(*args, **kwargs):
+    kwargs['weights_only'] = False
+    return _original_torch_load(*args, **kwargs)
+torch.load = patched_torch_load
+
+# Allowlist the dictionary class
+torch.serialization.add_safe_globals([fairseq.data.dictionary.Dictionary])
 
 
 def get_index_path_from_model(sid):

@@ -615,6 +615,7 @@ def click_train(
 # but4.click(train_index, [exp_dir1], info3)
 def train_index(exp_dir1, version19):
     # exp_dir = "%s/logs/%s" % (now_dir, exp_dir1)
+    print("Feature index training button clicked")
     exp_dir = "logs/%s" % (exp_dir1)
     os.makedirs(exp_dir, exist_ok=True)
     feature_dir = (

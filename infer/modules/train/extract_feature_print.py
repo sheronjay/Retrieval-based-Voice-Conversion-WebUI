@@ -24,6 +24,13 @@ import soundfile as sf
 import torch
 import torch.nn.functional as F
 
+# Patch torch.load to use weights_only=False for PyTorch 2.6+ compatibility
+_original_torch_load = torch.load
+def patched_torch_load(*args, **kwargs):
+    kwargs['weights_only'] = False
+    return _original_torch_load(*args, **kwargs)
+torch.load = patched_torch_load
+
 if "privateuseone" not in device:
     device = "cpu"
     if torch.cuda.is_available():
